@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop – ShopMe{% endblock %}
+
+{% block body %}
+    <h1>Search Products</h1>
+
+    <form action="{{ path('shop') }}" method="get">
+        <input type="text" name="q" placeholder="Search products" value="{{ searchTerm }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="product-list">
+        {% for item in shopItems %}
+            <div class="product">
+                <h3>{{ item.name }}</h3>
+                <p>${{ item.price }}</p>
+            </div>
+        {% else %}
+            <p>No products found matching "{{ searchTerm }}".</p>
+        {% endfor %}
+    </div>
+{% endblock %}

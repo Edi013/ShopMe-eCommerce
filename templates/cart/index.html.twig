@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your Cart – ShopMe{% endblock %}
+
+{% block body %}
+    <h1>Your Cart</h1>
+    <ul>
+        {% for item in cartItems %}
+            <li>{{ item.name }} – ${{ item.price }}</li>
+        {% else %}
+            <li>Your cart is empty.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

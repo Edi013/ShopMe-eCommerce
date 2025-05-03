@@ -1,13 +1,15 @@
 <?php
-namespace Controller;
+namespace App\Controller;
+
+include_once "CartController.php";
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    #[Route('/cart', name: 'cart')]
+    //#[Route('/cart', name: 'cart')]
     public function index(): Response
     {
         $cartItems = [

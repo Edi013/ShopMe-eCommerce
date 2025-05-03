@@ -3,3 +3,14 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+home_list:
+    path: [/, /home]
+    controller: App\Controller\HomeController::index
+cart_list:
+    path: [/cart]
+    controller: App\Controller\CartController::index
+shop_list:
+    path: [/shop]
+    controller: App\Controller\ShopController::index
+

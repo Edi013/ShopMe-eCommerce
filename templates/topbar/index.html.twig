@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+
+<div class="topbar">
+    <button
+            class="topbar_button {% if app.request.get('_route') == 'home' or
+                app.request.get('_route') == '' %} active{% endif %}"
+            onclick="window.location.href='{{ path('home') }}'"
+            role="button">
+        <b class="fas fa-bars">Home</b>
+    </button>
+    <button
+            class="topbar_button {% if app.request.get('_route') == 'shop' %} active{% endif %}"
+            onclick="window.location.href='{{ path('shop') }}'"
+            role="button"
+    >
+        <b class="fas fa-bars">Shop</b>
+    </button>
+    <button
+            class="topbar_button {% if app.request.get('_route') == 'cart' %} active{% endif %}"
+            onclick="window.location.href='{{ path('cart') }}'"
+            role="button"
+    >
+        <b class="fas fa-bars">Cart</b>
+    </button>
+</div>
+
+
+<style>
+
+    .topbar {
+        display: flex;
+        background-color: var(--color-bg-contrast);
+        height: 70px;
+        width: 99%;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        align-items: center;
+        justify-content: end;
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 10px;
+
+    }
+
+    .topbar_button {
+        margin-right: 2vw;
+    }
+    .topbar_button.active {
+        background-color: var(--color-bg-contrast) ;
+        color: var(--color-text);
+    }
+</style>

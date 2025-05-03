@@ -6,14 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-include_once "ShopController.php";
-
 class ShopController extends AbstractController
 {
     #[Route('/shop', name: 'shop')]
     public function index(Request $request): Response
     {
-        // Example shop items (in a real app, this could be fetched from a database)
         $shopItems = [
             ['name' => 'Item 1', 'price' => 10.00],
             ['name' => 'Item 2', 'price' => 20.00],
@@ -23,7 +20,7 @@ class ShopController extends AbstractController
 
         $searchTerm = $request->query->get('q', '');
 
-        // Filter shop items by the search term
+
         if ($searchTerm) {
             $shopItems = array_filter($shopItems, function ($item) use ($searchTerm) {
                 return stripos($item['name'], $searchTerm) !== false;

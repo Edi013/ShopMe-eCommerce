@@ -1,3 +1,35 @@
+/* https://colorhunt.co/palette/22283131363f76abaeeeeeee */
+:root {
+    --color-bg: #31363F;           /* Main background */
+    --color-bg-contrast: #1a2025;     /* Background contrast / card surfaces */
+    --color-accent: #6aacaf;       /* Accent buttons, highlights */
+    --color-accent-light: #91cacd;
+    --color-text: #EEEEEE;         /* Primary readable text */
+    --color-black: black;
+    --color-muted: #B0B0B0;        /* Muted/secondary text */
+    --color-border: #3E444D;       /* Borders */
+    --color-hover: #3b888c;        /* Hover state for accents */
+}
+
+
+
 body {
-    background-color: skyblue;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--color-bg);
+    color:  var(--color-text);
+}
+
+button{
+    background-color: var(--color-accent);
+    color: var(--color-black);
+    font-size: 16px;
+    height: 45px;
+    padding: 5px  15px;
+    border-radius: 12px;
+}
+
+button:hover {
+    background-color: var(--color-hover) ;
+    color: white;
 }

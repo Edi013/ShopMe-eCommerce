@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'products')]
 class Product
 {
@@ -35,7 +38,20 @@ class Product
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $active = true;
 
-    public function getId(): ?UuidInterface
+    #[ORM\OneToMany(targetEntity: CartProduct::class, mappedBy: 'user',  orphanRemoval: true)]
+    private Collection $cartProducts;
+
+    public function __construct()
+    {
+        $this->cartProducts = new ArrayCollection();
+    }
+
+    public function getCartProducts(): Collection
+    {
+        return $this->cartProducts;
+    }
+
+      public function getId(): ?UuidInterface
     {
         return $this->id;
     }

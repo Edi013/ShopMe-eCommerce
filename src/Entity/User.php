@@ -3,13 +3,14 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 class User
 {
@@ -30,13 +31,54 @@ class User
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sale::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Sale::class, mappedBy: 'user',  cascade: ['persist', 'remove'])]
     private Collection $sales;
+
+    #[ORM\OneToMany(targetEntity: CartProduct::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $cartProducts;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->sales = new ArrayCollection();
+        $this->cartProducts = new ArrayCollection();
+    }
+
+    public function getCartProducts(): Collection
+    {
+        return $this->cartProducts;
+    }
+
+    public function addCartProduct(Product $product, int $quantity): self
+    {
+        // Check if this cart product already exists for the user and product combination
+        $existingCartProduct = $this->cartProducts->filter(function (CartProduct $cartProduct) use ($product) {
+            return $cartProduct->getProduct() === $product;
+        })->first();
+
+        if ($existingCartProduct) {
+            // If product already exists, update quantity
+            $existingCartProduct->setQuantity($existingCartProduct->getQuantity() + $quantity);
+        } else {
+            // If a product doesn't exist, create a new CartProduct
+            $cartProduct = new CartProduct($this, $product, $quantity);
+            $this->cartProducts[] = $cartProduct;
+        }
+
+        return $this;
+    }
+
+    public function removeCartProduct(Product $product): self
+    {
+        $cartProduct = $this->cartProducts->filter(function (CartProduct $cartProduct) use ($product) {
+            return $cartProduct->getProduct() === $product;
+        })->first();
+
+        if ($cartProduct) {
+            $this->cartProducts->removeElement($cartProduct);
+        }
+
+        return $this;
     }
 
     public function getId(): ?UuidInterface

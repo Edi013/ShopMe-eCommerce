@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CartProductRepository;
+use DateTimeImmutable as DateTimeImmutableAlias;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CartProductRepository::class)]
@@ -23,11 +24,11 @@ class CartProduct
     private int $quantity;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $createdAt;
+    private DateTimeImmutableAlias $createdAt;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutableAlias();
     }
 
     public function getUser(): ?User
@@ -35,7 +36,7 @@ class CartProduct
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;
@@ -63,12 +64,12 @@ class CartProduct
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutableAlias
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(DateTimeImmutableAlias $createdAt): self
     {
         $this->createdAt = $createdAt;
         return $this;

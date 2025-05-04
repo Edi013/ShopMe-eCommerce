@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: SaleRepository::class)]
 #[ORM\Table(name: 'sales')]
@@ -16,7 +17,7 @@ class Sale
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'Ramsey\Uuid\Doctrine\UuidGenerator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?UuidInterface $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sales')]

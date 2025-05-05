@@ -3,21 +3,85 @@
 {% block title %}Shop – ShopMe{% endblock %}
 
 {% block body %}
-    <h1>Search Products</h1>
+    <div class="center-div m-2">
+        <form action="{{ path('shop') }}" method="get" class="search-input">
+            <div>
 
-    <form action="{{ path('shop') }}" method="get">
-        <input type="text" name="q" placeholder="Search products" value="{{ searchTerm }}">
-        <button type="submit">Search</button>
-    </form>
+            <input type="text" name="q" placeholder="Search products" value="{{ searchTerm }}">
+            <button type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+            </div>
+        </form>
+    </div>
 
     <div class="product-list">
         {% for item in shopItems %}
-            <div class="product">
-                <h3>{{ item.title }}</h3>
-                <p>${{ item.price }}</p>
+            <div class="card bg-dark text-white">
+
+            </div>
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ item.title }}
+                    </h5>
+                    <p class="card-text">
+                        <div>
+                            {{ item.description }}
+                        </div>
+                        <div class="align-right">
+                            ${{ item.price }}
+                        </div>
+
+                        {% if item.stock >= 1 %}
+                            <p class='green-text'>In stock</p>
+                        {% else %}
+                            <p class='red-text'>Out of stock</p>
+                        {% endif %}
+                    </p>
+                    <div class="space-between">
+                        <a href="#" class="btn btn-outline-light">Details</a>
+                        <a href="#" class="btn btn-outline-light"><i class="fas fa-shopping-cart"></i>  Add to cart</a>
+                    </div>
+                </div>
             </div>
         {% else %}
-            <p>No products found matching "{{ searchTerm }}".</p>
+            <div class='center-div'>
+                <h4 class="">No products found matching "{{ searchTerm }}".</h4>
+            </div>
         {% endfor %}
     </div>
+
+
+<style>
+    .search-input{
+        width: 80%;
+        display:flex;
+        justify-content: center;
+    }
+    .search-input div{
+        width:100%;
+    }
+    .search-input input{
+        width:80%;
+    }
+    .search-input button{
+        min-width: 7%;
+        width: 15%;
+        max-width:15%;
+    }
+
+    .card{
+        display:flex;
+        justify-content: center;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-top: 10px;
+    }
+
+    .align-right{
+        display: flex;
+        justify-content: end;
+    }
+</style>
 {% endblock %}

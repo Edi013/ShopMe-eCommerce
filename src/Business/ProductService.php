@@ -24,7 +24,7 @@ class ProductService
         // If a search term is provided, filter the products
         if ($searchTerm) {
             $products = array_filter($products, function ($product) use ($searchTerm) {
-                return stripos($product->getName(), $searchTerm) !== false;
+                return stripos($product->getTitle(), $searchTerm) !== false;
             });
         }
 

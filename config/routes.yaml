@@ -13,4 +13,9 @@ cart_list:
 shop_list:
     path: [/shop]
     controller: App\Controller\ShopController::index
-
+login_form:
+    path: [/auth]
+    controller: App\Controller\LoginController::index
+register_form:
+    path: [/register]
+    controller: App\Controller\RegisterController::index

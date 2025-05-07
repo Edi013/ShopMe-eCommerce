@@ -15,7 +15,7 @@ shop_list:
     controller: App\Controller\ShopController::index
 login_form:
     path: [/auth]
-    controller: App\Controller\LoginController::index
+    controller: App\Controller\LoginController
 register_form:
     path: [/register]
-    controller: App\Controller\RegisterController::index
+    controller: App\Controller\RegisterController

@@ -21,15 +21,18 @@ class UserService
         return $this->userRepository->findByUserName($username);
     }
 
-    public function createNewUser(string $username, string $plainPassword): User
+    public function createUser(string $username, string $plainPassword): User
     {
+        $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
+
         $user = new User();
         $user->setUserName($username);
-        $user->setPassword($plainPassword); // Hash if needed
+        $user->setPassword($hashedPassword);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $user;
     }
+
 }

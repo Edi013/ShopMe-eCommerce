@@ -1,29 +1,40 @@
+# config/packages/security.yaml
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    # Password hashers
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
+    # Providers
     providers:
         users_in_memory: { memory: null }
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        # Public routes, no security needed (login, register)
         main:
-            lazy: true
-            provider: users_in_memory
+            pattern: ^/(login|register)$
+            security: false
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+        # Protected routes (authentication required)
+        secured_area:
+            pattern: ^/(?!login|register).*  # All routes except login and register
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path: logout
+            # Custom authenticator
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator  # Use your custom authenticator class here
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Access control
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    # Example: restrict access to admin routes
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:

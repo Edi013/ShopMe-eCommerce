@@ -4,6 +4,9 @@ framework:
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
+        #handler_id: null
+        #cookie_lifetime: 1      # Session cookie ends when browser closes
+        #gc_maxlifetime: 1    # Session data valid for 1 hour
 
     #esi: true
     #fragments: true

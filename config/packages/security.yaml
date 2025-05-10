@@ -18,17 +18,6 @@ security:
             pattern: ^/(login|register)$
             security: false
 
-        # Protected routes (authentication required)
-        secured_area:
-            pattern: ^/(?!login|register).*  # All routes except login and register
-            form_login:
-                login_path: login
-                check_path: login
-            logout:
-                path: logout
-            # Custom authenticator
-            custom_authenticators:
-                - App\Security\LoginFormAuthenticator  # Use your custom authenticator class here
 
     # Access control
     access_control:

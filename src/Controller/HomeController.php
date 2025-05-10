@@ -14,9 +14,6 @@ class HomeController extends AbstractController
     public function __construct(RequestStack $rs)
     {
         $this->session = $rs->getSession();
-
-        // Seed only in dev/test
-        UserSession::seedIdAndUsernameDevelopmentOnly($this->session);
     }
 
     #[Route('/', name: 'home')]
@@ -24,9 +21,6 @@ class HomeController extends AbstractController
     {
         $userId   = UserSession::getUserId($this->session);
         $username = UserSession::getUsername($this->session);
-        dump('test dump');
-        dump($this->session->get('user_id'));
-        dump($this->session->get('username'));
 
         return $this->render('home/index.html.twig', [
             'user_id'  => $userId,

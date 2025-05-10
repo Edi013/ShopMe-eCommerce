@@ -1,5 +1,5 @@
 <?php
-namespace App\Security;
+namespace App\Common\Security;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

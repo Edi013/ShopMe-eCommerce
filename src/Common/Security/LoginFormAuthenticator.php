@@ -1,8 +1,8 @@
 <?php
-namespace App\Security;
+namespace App\Common\Security;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Common\UserSession;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginFormAuthenticator
 {

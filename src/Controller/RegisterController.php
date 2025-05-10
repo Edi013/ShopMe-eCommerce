@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\Types\RegisterFormType;
-use App\Services\UserService;
+use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

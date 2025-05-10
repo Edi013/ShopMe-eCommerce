@@ -15,9 +15,6 @@ class LoginFormAuthenticator
         $userId = UserSession::getUserId($session);
         $isLoggedIn = $userId !== null && $userId !== '';
 
-        echo('user id: ' . $userId .'<br>');
-        echo('session id: ' . $session->getId().'<br>');
-        echo('session age: ' . $session->getMetadataBag()->getLastUsed().'<br>');
         if (!$isLoggedIn) {
             return false;
         }

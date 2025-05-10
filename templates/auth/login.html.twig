@@ -1,4 +1,3 @@
-{# templates/auth/auth.html.twig #}
 <head>
     {# Font Awesome #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -31,7 +30,6 @@
             </div>
         </div>
 
-    {{ form_end(form) }}
 
     {% for message in app.flashes('error') %}
         <div class="alert alert-danger center-div">{{ message }}</div>
@@ -40,6 +38,7 @@
         <div class="alert alert-success center-div">{{ message }}</div>
     {% endfor %}
     </div>
+    {{ form_end(form) }}
 
     <style>
         body{
@@ -61,26 +60,24 @@
             border-radius: 10px;
             margin: 12.5% 0.5%;
             min-height: 500px;
-            min-width: 750px;
+            min-width: 850px;
             font-size: 25px;
         }
 
         .title{
             font-size: 72px;
         }
-        .login-inputs{
+
+        .login-inputs, form div{
             display: flex !important;
             justify-content: center !important;
+            align-items: center !important;
+            align-content: center !important;
             width: 100% !important;
         }
 
         .required{
             min-width: 50%;
-        }
-
-        form div {
-            display: flex !important;
-            justify-content: center !important;
         }
 
         .redirect{

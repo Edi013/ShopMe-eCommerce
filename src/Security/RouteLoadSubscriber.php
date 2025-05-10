@@ -12,16 +12,14 @@ class RouteLoadSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         if(LoginFormAuthenticator::isUserAuthenticated($request)){
-            echo('user is authenticated');
             return;
         }
 
         $route = $request->get('_route');
-        if($route === 'login'){
+        if($route === 'login' || $route === 'register'){
             return;
         }
         $redirectUrl = '/login';
-        echo('user is not authenticated');
         $response = new RedirectResponse($redirectUrl);
         $event->setResponse($response);
     }

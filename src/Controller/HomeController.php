@@ -19,6 +19,10 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
+        //$this->addFlash('success', 'Login successful!');
+        //sleep(0.5);
+       // $this->session->getFlashBag()->clear();
+
         $userId   = UserSession::getUserId($this->session);
         $username = UserSession::getUsername($this->session);
 

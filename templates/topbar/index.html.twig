@@ -20,8 +20,11 @@
     >
         <b class="fas fa-shopping-cart"> Cart</b>
     </button>
-    <button>
-        <b class="fas fa-gear"> Settings</b>
+    <button
+            onclick="window.location.href='{{ path('logout') }}'"
+            role="button"
+    >
+        <b class="fas fa-sign-out"> Logout</b>
     </button>
 </div>
 

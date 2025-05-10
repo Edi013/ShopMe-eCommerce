@@ -3,8 +3,7 @@ namespace App\Controller;
 
 use App\Common\UserSession;
 use App\Controller\Types\LoginFormType;
-use App\Entity\User;
-use App\Services\UserService;
+use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -40,8 +39,6 @@ class LoginController extends AbstractController
                 UserSession::setUserId($session, $user->getId());
                 UserSession::setUsername($session, $user->getUsername());
                 UserSession::setLastLoginDate($session);
-
-                $this->addFlash('success', 'Login successful!');
                 return $this->redirectToRoute('home');
             }
         }
@@ -49,5 +46,11 @@ class LoginController extends AbstractController
         return $this->render('auth/login.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/logout', name: 'logout')]
+    public function logout(): Response{
+        UserSession::logout($this->requestStack->getSession());
+        return $this->redirectToRoute('login');
     }
 }

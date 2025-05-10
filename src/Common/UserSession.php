@@ -58,6 +58,8 @@ class UserSession
     public static function logout(SessionInterface $session): void
     {
         $session->clear();
+        $session->getFlashBag()->clear();
+        $session->invalidate();
     }
 
 //    public static function seedIdAndUsernameDevelopmentOnly(

@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace App\UseCases\Services;
 
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;

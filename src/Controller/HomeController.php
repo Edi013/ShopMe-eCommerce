@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
+use App\UseCases\Services\SaleService;
+use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     private \Symfony\Component\HttpFoundation\Session\SessionInterface $session;
+    private SaleService $saleService;
+    private UserService $userService;
 
-    public function __construct(RequestStack $rs)
+    public function __construct(RequestStack $rs, SaleService $saleService, UserService $userService)
     {
         $this->session = $rs->getSession();
+        $this->saleService = $saleService;
+        $this->userService = $userService;
     }
 
     #[Route('/', name: 'home')]
@@ -27,10 +33,13 @@ class HomeController extends AbstractController
 
         $userId   = UserSession::getUserId($this->session);
         $username = UserSession::getUsername($this->session);
+        $user = $this->userService->findByUserId($userId);
+        $sales = $this->saleService->getSalesAndProductsByUser($user);
 
         return $this->render('home/index.html.twig', [
             'user_id'  => $userId,
             'username' => $username,
+            'sales' => $sales,
         ]);
     }
 }

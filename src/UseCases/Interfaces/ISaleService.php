@@ -12,7 +12,7 @@ interface ISaleService
     public function createSale(User $user): Sale;
     public function assignProductsOnSale($sale, $products): void;
 
-    public function getSalesByUser(User $user): array;
+    public function getSalesAndProductsByUser(User $user): array;
 
     public function getSaleProducts(User $user, string $saleId): array;
 

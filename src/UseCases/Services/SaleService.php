@@ -2,26 +2,35 @@
 
 namespace App\UseCases\Services;
 
+use App\Entity\CartProduct;
 use App\Entity\SaleProduct;
 use App\Entity\User;
 use App\Entity\Sale;
 use App\Repository\SaleProductRepository;
 use App\Repository\SaleRepository;
 use App\UseCases\Interfaces\ISaleService;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SaleService implements  ISaleService
 {
     private $entityManager;
     private SaleRepository $saleRepository;
     private SaleProductRepository $saleProductRepository;
+    private ProductService $productService;
+    private RequestStack $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager, SaleRepository $saleRepository, SaleProductRepository $saleProductRepository)
+
+    public function __construct(EntityManagerInterface $entityManager, SaleRepository $saleRepository, SaleProductRepository $saleProductRepository,
+                                ProductService $productService, RequestStack $requestStack)
     {
         $this->entityManager = $entityManager;
         $this->saleRepository = $saleRepository;
         $this->saleProductRepository = $saleProductRepository;
+        $this->productService = $productService;
+        $this->requestStack = $requestStack;
     }
 
 
@@ -35,13 +44,29 @@ class SaleService implements  ISaleService
         return $sale;
     }
 
+    /**
+     * @param CartProduct[] $products
+     */
     public function assignProductsOnSale($sale, $products): void
     {
-        foreach ($products as $product) {
+        foreach ($products as $cartProduct) {
+            $product = $cartProduct->getProduct();
+            if ($cartProduct->getStock() < $quantity) {
+                $this->requestStack->getSession()->getFlashBag()->add(
+                    'error',
+                    sprintf('Not enough stock for "%s". Ordered: %d, Available: %d',
+                        $cartProduct->getTitle(),
+                        $quantity,
+                        $cartProduct->getStock()
+                    )
+                );
+                continue; // Skip this product
+            }
+
             $saleProduct = new SaleProduct();
             $saleProduct->setSale($sale);
-            $saleProduct->setProduct($product);
-            $saleProduct->setQuantity($product->getQuantity());
+            $saleProduct->setProduct($cartProduct);
+            $saleProduct->setQuantity($cartProduct->getQuantity());
             $this->entityManager->persist($saleProduct);
         }
     }
@@ -51,11 +76,34 @@ class SaleService implements  ISaleService
         return $this->saleProductRepository->findBySaleId($saleId);
     }
 
-    public function getSalesByUser(User $user): array
+    public function getSalesAndProductsByUser(User $user): array
     {
-        return $this->saleRepository->findBy(['user' => $user]);
+        $sales =  $this->saleRepository->findBy(['user' => $user]);
+        $salesData = [];
+        $totalPrice = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale->getSaleProducts() as $saleProduct) {
+                $product = $saleProduct->getProduct();
+                $salesData[] = [
+                    'saleId' => $sale->getId(),
+                    'createdAt' => $sale->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'productTitle' => $product->getTitle(),
+                    'quantity' => $saleProduct->getQuantity(),
+                    'price' => $product->getPrice(),
+                    'description' => $product->getDescription(),
+                ];
+                $totalPrice += $product->getPrice() * $saleProduct->getQuantity();
+            }
+        }
+        return [
+            'sales' => $salesData,
+            'totalPrice' => $totalPrice
+        ];
     }
 
+    /**
+     * @param CartProduct[] $products
+     */
     public function placeOrder($user, array $products): void
     {
         $this->entityManager->beginTransaction();

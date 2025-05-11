@@ -60,3 +60,6 @@ input{
 .red-text{
     color: var(--color-red)
 }
+.accent-text{
+    color: var(--color-accent);
+}

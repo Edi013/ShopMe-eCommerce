@@ -29,7 +29,7 @@ class CartService implements ICartService
 
     public function getProductsByUserWithFilter(User $user, string $filterTerm = ''): array
     {
-        $products = $this->getProductsByUser($user);
+        $products = $this->getCartProductsByUser($user);
 
         if ($filterTerm !== '') {
             $products = array_filter($products, function ($product) use ($filterTerm) {
@@ -96,7 +96,7 @@ class CartService implements ICartService
         }
     }
 
-    public function getProductsByUser(User $user): array
+    public function getCartProductsByUser(User $user): array
     {
         return $this->cartRepository->findByUser($user);
     }

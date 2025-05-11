@@ -37,7 +37,7 @@ class CartController extends AbstractController
         $userId = UserSession::getUserId($session);
         $user = $this->userService->findByUserId($userId);
 
-        $cartProducts = $this->cartService->getProductsByUser($user);
+        $cartProducts = $this->cartService->getCartProductsByUser($user);
 
         $products = [];
         foreach ($cartProducts as $cartProduct) {
@@ -84,10 +84,10 @@ class CartController extends AbstractController
     {
         $userId = UserSession::getUserId($request->getSession());
         $user = $this->userService->findByUserId($userId);
-        $products = $this->cartService->getProductsByUser($user);
+        $cartProducts = $this->cartService->getCartProductsByUser($user);
 
         try{
-            $this->saleService->placeOrder($user, $products);
+            $this->saleService->placeOrder($user, $cartProducts);
         }
         catch (\Exception $e){
             $this->addFlash('error', 'Error placing order. Try later.');

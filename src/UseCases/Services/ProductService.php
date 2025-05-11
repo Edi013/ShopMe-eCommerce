@@ -2,6 +2,7 @@
 namespace App\UseCases\Services;
 
 use App\Repository\ProductRepository;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductService
@@ -29,5 +30,10 @@ class ProductService
             'products' => $products,
             'searchTerm' => $searchTerm
         ];
+    }
+
+    public function findById(string $productId)
+    {
+        return $this->productRepository->find(Uuid::fromString($productId));
     }
 }

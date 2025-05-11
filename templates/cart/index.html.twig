@@ -1,14 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Your Cart – ShopMe{% endblock %}
+{% block title %}ShopMe - Cart{% endblock %}
 
 {% block body %}
-    <h1>Your Cart</h1>
-    <ul>
-        {% for item in cartItems %}
-            <li>{{ item.name }} – ${{ item.price }}</li>
+    <h1>Finish your command</h1>
+
+    <div class="product-list">
+        {% for product in products %}
+            <div class="card bg-dark text-white">
+
+            </div>
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ product.title }}
+                    </h5>
+                    <p class="card-text">
+                        <div>
+                            {{ product.description }}
+                        </div>
+                        <div class="align-right">
+                            ${{ product.price }}
+                        </div>
+
+                        <p class='green-text'>Quantity: {{ product.quantity }}</p>
+                    </p>
+                    <div class="space-between">
+                        <a href="#" class="btn btn-outline-light">Details</a>
+                    </div>
+                </div>
+            </div>
         {% else %}
-            <li>Your cart is empty.</li>
+            <div class='center-div'>
+                <h4 class="">Your cart is empty.</h4>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+
+    <style>
+        .card{
+            display:flex;
+            justify-content: center;
+            margin-right: 5%;
+            margin-left: 5%;
+            margin-top: 10px;
+        }
+
+        .align-right{
+            display: flex;
+            justify-content: end;
+        }
+    </style>
 {% endblock %}

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LoginFormAuthenticator
 {
-    public const MAX_LOGIN_AGE_IN_SECONDS = 30;
+    public const MAX_LOGIN_AGE_IN_SECONDS = 3600;
 
     public static function isUserAuthenticated(Request $request): bool
     {

@@ -4,6 +4,8 @@ namespace App\UseCases\Services;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class UserService
 {
@@ -33,6 +35,11 @@ class UserService
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    public function findByUserId(string $userId): ?User
+    {
+        return $this->userRepository->find(Uuid::fromString($userId));
     }
 
 }

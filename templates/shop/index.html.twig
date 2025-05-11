@@ -41,7 +41,9 @@
                     </p>
                     <div class="space-between">
                         <a href="#" class="btn btn-outline-light">Details</a>
-                        <a href="#" class="btn btn-outline-light"><i class="fas fa-shopping-cart"></i>  Add to cart</a>
+                        <button class="btn btn-outline-light add-to-cart" data-product-id="{{ item.id }}">
+                            <i class="fas fa-shopping-cart"></i> Add to cart
+                        </button>
                     </div>
                 </div>
             </div>
@@ -52,8 +54,37 @@
         {% endfor %}
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
 
-<style>
+                    const productId = button.getAttribute('data-product-id');
+
+                    const response = await fetch('/add-to-cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            product_id: productId,
+                            quantity: 1
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert('Added to cart!');
+                    } else {
+                        alert('Failed to add to cart.');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <style>
     .search-input{
         width: 80%;
         display:flex;

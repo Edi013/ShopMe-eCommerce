@@ -13,9 +13,15 @@ cart_list:
 shop_list:
     path: [/shop]
     controller: App\Controller\ShopController::index
+shop_add_to_cart:
+    path: [/add-to-cart]
+    controller: App\Controller\ShopController::addToCart
 login_form:
-    path: [/auth]
-    controller: App\Controller\LoginController
+    path: [/login]
+    controller: App\Controller\LoginController::login
 register_form:
     path: [/register]
-    controller: App\Controller\RegisterController
+    controller: App\Controller\RegisterController::register
+logout_form:
+    path: [/logout]
+    controller: App\Controller\LoginController::logout

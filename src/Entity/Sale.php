@@ -27,7 +27,7 @@ class Sale
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\OneToMany(mappedBy: 'sale', targetEntity: SaleProduct::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: SaleProduct::class, mappedBy: 'sale', cascade: ['persist', 'remove'])]
     private Collection $saleProducts;
 
     public function __construct()

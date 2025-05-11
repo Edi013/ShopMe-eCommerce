@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Common\UserSession;
 use App\UseCases\Services\CartService;
 use App\UseCases\Services\ProductService;
+use App\UseCases\Services\SaleService;
 use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,14 +18,16 @@ class CartController extends AbstractController
     private CartService $cartService;
     private ProductService $productService;
     private UserService $userService;
+    private SaleService $saleService;
     private RequestStack $requestStack;
 
-    public function __construct(CartService $cartService, ProductService $productService, UserService $userService, RequestStack $requestStack)
+    public function __construct(CartService $cartService, ProductService $productService, UserService $userService, RequestStack $requestStack, SaleService $saleService)
     {
         $this->cartService = $cartService;
         $this->productService = $productService;
         $this->userService = $userService;
         $this->requestStack = $requestStack;
+        $this->saleService = $saleService;
     }
 
     #[Route('/cart', name: 'cart')]
@@ -74,5 +77,24 @@ class CartController extends AbstractController
 
         $this->addFlash('success', 'Item deleted from cart!');
         return $this->redirectToRoute('cart');
+    }
+
+    #[Route('/place-order', name: 'place-order', methods: ['POST'])]
+    public function placeOrder(Request $request): RedirectResponse
+    {
+        $userId = UserSession::getUserId($request->getSession());
+        $user = $this->userService->findByUserId($userId);
+        $products = $this->cartService->getProductsByUser($user);
+
+        try{
+            $this->saleService->placeOrder($user, $products);
+        }
+        catch (\Exception $e){
+            $this->addFlash('error', 'Error placing order. Try later.');
+            return $this->redirectToRoute('cart');
+        }
+
+        $this->addFlash('success', 'Ordered placed!');
+        return $this->redirectToRoute('home');
     }
 }

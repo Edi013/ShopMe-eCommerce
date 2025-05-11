@@ -16,14 +16,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CartService implements ICartService
 {
-    private EntityManagerInterface $em;
+    private EntityManagerInterface $entityManager;
     private CartProductRepository $cartRepository;
     private SaleRepository $saleRepository;
     private SaleProductRepository $saleProductRepository;
 
     public function __construct(EntityManagerInterface $em, CartProductRepository $cartRepository)
     {
-        $this->em = $em;
+        $this->entityManager = $em;
         $this->cartRepository = $cartRepository;
     }
 
@@ -58,10 +58,10 @@ class CartService implements ICartService
             $cartProduct->setProduct($product);
             $cartProduct->setQuantity(1);
             $cartProduct->setCreatedAt(new \DateTimeImmutable());
-            $this->em->persist($cartProduct);
+            $this->entityManager->persist($cartProduct);
         }
 
-        $this->em->flush();
+        $this->entityManager->flush();
     }
 
     public function removeProduct(Product $product, User $user,int $quantity): void
@@ -73,44 +73,31 @@ class CartService implements ICartService
 
         if ($cartProduct) {
             if($cartProduct->getQuantity() - $quantity < 1){
-                $this->em->remove($cartProduct);
+                $this->entityManager->remove($cartProduct);
             }else{
                 $cartProduct->setQuantity($cartProduct->getQuantity() - $quantity);
             }
-            $this->em->flush();
+            $this->entityManager->flush();
+        }
+    }
+    public function removeAllProductsFromCart() : void
+    {
+        $this->entityManager->beginTransaction();
+        try {
+            $cartProducts = $this->cartRepository->findAll();
+            foreach ($cartProducts as $cartProduct) {
+                $this->entityManager->remove($cartProduct);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch ( \Exception $e) {
+            $this->entityManager->rollback();
+            throw $e;
         }
     }
 
     public function getProductsByUser(User $user): array
     {
         return $this->cartRepository->findByUser($user);
-    }
-
-    public function placeOrder($user): void
-    {
-        $products = $this->getProductsByUser($user);
-
-        $this->em->beginTransaction();
-        try {
-            $sale = new Sale();
-            $sale->setUser($user);
-            $sale->setCreatedAt(new \DateTimeImmutable());
-            $this->em->persist($sale);
-            $this->em->flush();
-
-            foreach ($products as $product) {
-                $saleProduct = new SaleProduct();
-                $saleProduct->setSale($sale);
-                $saleProduct->setProduct($product);
-                $saleProduct->setQuantity($product->getQuantity());
-                $this->em->persist($saleProduct);
-            }
-            $this->em->flush();
-            $this->em->commit();
-        } catch (\Exception $e) {
-            $this->em->rollback();
-            throw $e;
-        }
-
     }
 }

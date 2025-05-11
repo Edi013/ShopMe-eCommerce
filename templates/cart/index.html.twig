@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="space-between">
-        <h1>Your cart</h1>
+        <h1>Acquire your products</h1>
         <div class="align-right margin">
             <button class="btn btn-outline-light">
                 <i class="fa-solid fa-flag-checkered"></i> Place Order
@@ -37,7 +37,7 @@
                                     <div class="select-quantity">
                                             <label for="quantity_{{ product.id }}">Quantity:</label>
                                             <select name="quantity" id="quantity_{{ product.id }}">
-                                                {% for i in 1..product.stock %}
+                                                {% for i in 1..product.quantity %}
                                                     <option value="{{ i }}">{{ i }}</option>
                                                 {% endfor %}
                                             </select>

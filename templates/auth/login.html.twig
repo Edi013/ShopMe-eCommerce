@@ -71,7 +71,6 @@
                     {{ form_row(form.username) }}
                     {{ form_row(form.password) }}
                 </div>
-
                 <div class="center-div">
                     <button type="submit">Login</button>
                 </div>
@@ -79,14 +78,13 @@
                     <a class='redirect' href="{{ path('register') }}">New user? Create an account!</a>
                 </div>
                 {{ form_end(form) }}
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger center-div">{{ message }}</div>
+                {% endfor %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success center-div">{{ message }}</div>
+                {% endfor %}
             </div>
         </div>
-
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger center-div">{{ message }}</div>
-        {% endfor %}
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success center-div">{{ message }}</div>
-        {% endfor %}
     </body>
 </html>

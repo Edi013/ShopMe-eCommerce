@@ -54,6 +54,11 @@ input{
     justify-content: space-between;
 }
 
+.space-between-no-fix-size{
+    display: flex;
+    justify-content: space-between;
+}
+
 .green-text{
     color: var(--color-green);
 }

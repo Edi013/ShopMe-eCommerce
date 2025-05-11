@@ -3,11 +3,11 @@ namespace App\UseCases\Services;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\UseCases\Interfaces\Services\IUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
-class UserService
+class UserService implements IUserService
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;

@@ -4,22 +4,15 @@ namespace App\UseCases\Services;
 
 use App\Entity\CartProduct;
 use App\Entity\Product;
-use App\Entity\Sale;
-use App\Entity\SaleProduct;
 use App\Entity\User;
 use App\Repository\CartProductRepository;
-use App\Repository\SaleProductRepository;
-use App\Repository\SaleRepository;
-use App\UseCases\Interfaces\ICartService;
+use App\UseCases\Interfaces\Services\ICartService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class CartService implements ICartService
 {
     private EntityManagerInterface $entityManager;
     private CartProductRepository $cartRepository;
-    private SaleRepository $saleRepository;
-    private SaleProductRepository $saleProductRepository;
 
     public function __construct(EntityManagerInterface $em, CartProductRepository $cartRepository)
     {

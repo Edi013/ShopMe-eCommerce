@@ -2,21 +2,24 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
+use App\UseCases\Interfaces\Services\ISaleService;
+use App\UseCases\Interfaces\Services\IUserService;
 use App\UseCases\Services\SaleService;
 use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    private \Symfony\Component\HttpFoundation\Session\SessionInterface $session;
-    private SaleService $saleService;
-    private UserService $userService;
+    private SessionInterface $session;
+    private ISaleService $saleService;
+    private IUserService $userService;
 
-    public function __construct(RequestStack $rs, SaleService $saleService, UserService $userService)
+    public function __construct(RequestStack $rs, ISaleService $saleService, IUserService $userService)
     {
         $this->session = $rs->getSession();
         $this->saleService = $saleService;

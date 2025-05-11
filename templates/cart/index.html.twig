@@ -6,9 +6,11 @@
     <div class="space-between">
         <h1>Acquire your products</h1>
         <div class="align-right margin">
-            <button class="btn btn-outline-light">
-                <i class="fa-solid fa-flag-checkered"></i> Place Order
-            </button>
+            <form action="{{ path('place-order') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">
+                    <i class="fa-solid fa-flag-checkered"></i> Place Order
+                </button>
+            </form>
         </div>
     </div>
 

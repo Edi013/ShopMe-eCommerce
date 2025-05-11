@@ -2,10 +2,10 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
-use App\UseCases\Services\CartService;
-use App\UseCases\Services\ProductService;
-use App\UseCases\Services\SaleService;
-use App\UseCases\Services\UserService;
+use App\UseCases\Interfaces\Services\ICartService;
+use App\UseCases\Interfaces\Services\IProductService;
+use App\UseCases\Interfaces\Services\ISaleService;
+use App\UseCases\Interfaces\Services\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private CartService $cartService;
-    private ProductService $productService;
-    private UserService $userService;
-    private SaleService $saleService;
+    private ICartService $cartService;
+    private IProductService $productService;
+    private IUserService $userService;
+    private ISaleService $saleService;
     private RequestStack $requestStack;
 
-    public function __construct(CartService $cartService, ProductService $productService, UserService $userService, RequestStack $requestStack, SaleService $saleService)
-    {
+    public function __construct(
+        ICartService $cartService,
+        IProductService $productService,
+        IUserService $userService,
+        RequestStack $requestStack,
+        ISaleService $saleService
+    ) {
         $this->cartService = $cartService;
         $this->productService = $productService;
         $this->userService = $userService;
@@ -88,6 +93,7 @@ class CartController extends AbstractController
 
         try{
             $this->saleService->placeOrder($user, $cartProducts);
+            $this->cartService->removeAllProductsFromCart();
         }
         catch (\Exception $e){
             $this->addFlash('error', 'Error placing order. Try later.');

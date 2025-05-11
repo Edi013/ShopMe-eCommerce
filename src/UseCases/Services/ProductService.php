@@ -2,10 +2,11 @@
 namespace App\UseCases\Services;
 
 use App\Repository\ProductRepository;
+use App\UseCases\Interfaces\Services\IProductService;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductService
+class ProductService implements IProductService
 {
     private ProductRepository $productRepository;
 
@@ -14,7 +15,7 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getProducts(Request $request)
+    public function getProducts(Request $request): array
     {
         $searchTerm = $request->query->get('q', '');
 

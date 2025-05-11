@@ -3,12 +3,12 @@
 namespace App\UseCases\Services;
 
 use App\Entity\CartProduct;
+use App\Entity\Sale;
 use App\Entity\SaleProduct;
 use App\Entity\User;
-use App\Entity\Sale;
 use App\Repository\SaleProductRepository;
 use App\Repository\SaleRepository;
-use App\UseCases\Interfaces\ISaleService;
+use App\UseCases\Interfaces\Services\ISaleService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class SaleService implements  ISaleService
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
     private SaleRepository $saleRepository;
     private SaleProductRepository $saleProductRepository;
     private ProductService $productService;
@@ -49,25 +49,37 @@ class SaleService implements  ISaleService
      */
     public function assignProductsOnSale($sale, $products): void
     {
-        foreach ($products as $cartProduct) {
-            $product = $cartProduct->getProduct();
-            if ($cartProduct->getStock() < $quantity) {
-                $this->requestStack->getSession()->getFlashBag()->add(
-                    'error',
-                    sprintf('Not enough stock for "%s". Ordered: %d, Available: %d',
-                        $cartProduct->getTitle(),
-                        $quantity,
-                        $cartProduct->getStock()
-                    )
-                );
-                continue; // Skip this product
-            }
+        $this->entityManager->beginTransaction();
+        try{
+            foreach ($products as $cartProduct) {
+                $product = $cartProduct->getProduct();
+                $quantity = $cartProduct->getQuantity();
+                if ($product->getStock() < $quantity) {
+                    $this->requestStack->getSession()->getFlashBag()->add(
+                        'error',
+                        sprintf('Not enough stock for "%s". Ordered: %d, Available: %d',
+                            $product->getTitle(),
+                            $quantity,
+                            $product->getStock()
+                        )
+                    );
+                    $this->entityManager->rollback();
+                    return;
+                }
 
-            $saleProduct = new SaleProduct();
-            $saleProduct->setSale($sale);
-            $saleProduct->setProduct($cartProduct);
-            $saleProduct->setQuantity($cartProduct->getQuantity());
-            $this->entityManager->persist($saleProduct);
+                $saleProduct = new SaleProduct();
+                $saleProduct->setSale($sale);
+                $saleProduct->setProduct($product);
+                $saleProduct->setQuantity($cartProduct->getQuantity());
+                $this->entityManager->persist($saleProduct);
+            }
+            $this->entityManager->commit();
+        }catch (\Throwable $e) {
+            $this->requestStack->getSession()->getFlashBag()->add(
+                'error',
+                'Cannnot assign products to sale. Try later.'
+            );
+            $this->entityManager->rollback();
         }
     }
 
@@ -82,11 +94,10 @@ class SaleService implements  ISaleService
         $salesData = [];
         $totalPrice = 0;
         foreach ($sales as $sale) {
+            $saleProducts = [];
             foreach ($sale->getSaleProducts() as $saleProduct) {
                 $product = $saleProduct->getProduct();
-                $salesData[] = [
-                    'saleId' => $sale->getId(),
-                    'createdAt' => $sale->getCreatedAt()->format('Y-m-d H:i:s'),
+                $saleProducts[] = [
                     'productTitle' => $product->getTitle(),
                     'quantity' => $saleProduct->getQuantity(),
                     'price' => $product->getPrice(),
@@ -94,10 +105,15 @@ class SaleService implements  ISaleService
                 ];
                 $totalPrice += $product->getPrice() * $saleProduct->getQuantity();
             }
+            $salesData[] = [
+                'saleId' => $sale->getId(),
+                'createdAt' => $sale->getCreatedAt()->format('Y-m-d H:i:s'),
+                'products' => $saleProducts,
+            ];
         }
         return [
             'sales' => $salesData,
-            'totalPrice' => $totalPrice
+            'totalPrice' => $totalPrice,
         ];
     }
 

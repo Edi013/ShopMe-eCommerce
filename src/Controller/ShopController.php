@@ -2,25 +2,22 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
-use App\Entity\Product;
-use App\UseCases\Services\CartService;
-use App\UseCases\Services\ProductService;
-use App\UseCases\Services\UserService;
+use App\UseCases\Interfaces\Services\ICartService;
+use App\UseCases\Interfaces\Services\IProductService;
+use App\UseCases\Interfaces\Services\IUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends AbstractController
 {
-    private ProductService $productService;
-    private CartService $cartService;
+    private IProductService $productService;
+    private ICartService $cartService;
+    private IUserService $userService;
 
-    private UserService $userService;
-
-    public function __construct(ProductService $productService, CartService $cartService, UserService $userService)
+    public function __construct(IProductService $productService, ICartService $cartService, IUserService $userService)
     {
         $this->productService = $productService;
         $this->cartService = $cartService;

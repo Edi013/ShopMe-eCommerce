@@ -41,9 +41,21 @@
                     </p>
                     <div class="space-between">
                         <a href="#" class="btn btn-outline-light">Details</a>
-                        <button class="btn btn-outline-light add-to-cart" data-product-id="{{ item.id }}">
-                            <i class="fas fa-shopping-cart"></i> Add to cart
-                        </button>
+                        {% if item.stock >= 1 %}
+                            <div class="center-div">
+                                <div class="select-quantity">
+                                    <label for="quantity_{{ item.id }}">Quantity:</label>
+                                    <select name="quantity" id="quantity_{{ item.id }}">
+                                        {% for i in 1..item.stock %}
+                                            <option value="{{ i }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button class="btn btn-outline-light add-to-cart" data-product-id="{{ item.id }}">
+                                    <i class="fas fa-shopping-cart"></i> Add to cart
+                                </button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -59,8 +71,11 @@
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', async (event) => {
                     event.preventDefault();
-
+                    button.disabled = true;
                     const productId = button.getAttribute('data-product-id');
+
+                    const quantitySelect = document.querySelector(`#quantity_${productId}`);
+                    const quantity = quantitySelect ? quantitySelect.value : 1;
 
                     const response = await fetch('/add-to-cart', {
                         method: 'POST',
@@ -69,15 +84,16 @@
                         },
                         body: new URLSearchParams({
                             product_id: productId,
-                            quantity: 1
+                            quantity: quantity
                         })
                     });
 
                     if (response.ok) {
-                        alert('Added to cart!');
+                        console.log(response);
                     } else {
-                        alert('Failed to add to cart.');
+                        console.log(response);
                     }
+                    window.location.reload();
                 });
             });
         });
@@ -113,6 +129,12 @@
     .align-right{
         display: flex;
         justify-content: end;
+    }
+    .select-quantity{
+        margin: 0 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
 {% endblock %}

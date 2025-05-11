@@ -43,7 +43,7 @@ class CartService implements ICartService
         ];
     }
 
-    public function addProduct(Product $product, User $user): void
+    public function addProduct(Product $product, User $user, int $quantity): void
     {
         $cartProduct = $this->cartRepository->findOneBy([
             'user' => $user,
@@ -51,7 +51,7 @@ class CartService implements ICartService
         ]);
 
         if ($cartProduct) {
-            $cartProduct->setQuantity($cartProduct->getQuantity() + 1);
+            $cartProduct->setQuantity($cartProduct->getQuantity() + $quantity);
         } else {
             $cartProduct = new CartProduct();
             $cartProduct->setUser($user);
@@ -64,7 +64,7 @@ class CartService implements ICartService
         $this->em->flush();
     }
 
-    public function removeProduct(Product $product, User $user): void
+    public function removeProduct(Product $product, User $user,int $quantity): void
     {
         $cartProduct = $this->cartRepository->findOneBy([
             'user' => $user,
@@ -72,7 +72,11 @@ class CartService implements ICartService
         ]);
 
         if ($cartProduct) {
-            $this->em->remove($cartProduct);
+            if($cartProduct->getQuantity() - $quantity < 1){
+                $this->em->remove($cartProduct);
+            }else{
+                $cartProduct->setQuantity($cartProduct->getQuantity() - $quantity);
+            }
             $this->em->flush();
         }
     }

@@ -3,13 +3,17 @@
 {% block title %}ShopMe - Cart{% endblock %}
 
 {% block body %}
-    <h1>Finish your command</h1>
+    <div class="space-between">
+        <h1>Your cart</h1>
+        <div class="align-right margin">
+            <button class="btn btn-outline-light">
+                <i class="fa-solid fa-flag-checkered"></i> Place Order
+            </button>
+        </div>
+    </div>
 
     <div class="product-list">
         {% for product in products %}
-            <div class="card bg-dark text-white">
-
-            </div>
             <div class="card bg-dark text-white">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -23,10 +27,29 @@
                             ${{ product.price }}
                         </div>
 
-                        <p class='green-text'>Quantity: {{ product.quantity }}</p>
+                        <p class='green-text product-quantity{{ product.id }}'>Quantity: {{ product.quantity }}</p>
                     </p>
                     <div class="space-between">
                         <a href="#" class="btn btn-outline-light">Details</a>
+                        <div class="center-div">
+                            <form action="{{ path('remove-from-cart', {'productId': product.id}) }}" method="POST">
+                                <div class="center-div">
+                                    <div class="select-quantity">
+                                            <label for="quantity_{{ product.id }}">Quantity:</label>
+                                            <select name="quantity" id="quantity_{{ product.id }}">
+                                                {% for i in 1..product.stock %}
+                                                    <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline-light remove-from-cart " data-product-id="{{ product.id }} old-quantity="{{ product.quantity }}">
+                                            <i class="fa-solid fa-trash red-text"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,7 +58,10 @@
                 <h4 class="">Your cart is empty.</h4>
             </div>
         {% endfor %}
+
     </div>
+
+
 
     <style>
         .card{
@@ -49,6 +75,21 @@
         .align-right{
             display: flex;
             justify-content: end;
+        }
+        .margin{
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        .select-quantity{
+            margin: 0 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .red-text{
+            color: var(--color-red);
         }
     </style>
 {% endblock %}

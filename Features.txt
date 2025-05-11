@@ -1,0 +1,16 @@
+Features Shopme
+
+1. HomePage:
+	- your sales
+	- your acc details
+2. Cart Page:
+	- place an order
+	- remove product from cart
+	- remove by quantity
+3. ShopPage	
+	- add product in cart ( from ShopPage )
+	- add quantity in cart, not default 1 .
+	- flash alert doesn't show instant
+4. DetailsPage/{ProductId}
+	- build it.
+	- set it on details buttons in Shop & Cart pages

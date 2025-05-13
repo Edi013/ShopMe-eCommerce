@@ -22,8 +22,31 @@
 
 5. **Enjoy**
    - Run `symfony serve`
-     
-   
+
+
+# Demo
+
+
+**Authentication pages**
+
+![2025-05-13 19_54_41-Window](https://github.com/user-attachments/assets/55392c72-0b5b-4dac-8925-bcc87c540678)
+![2025-05-13 19_55_41-Window](https://github.com/user-attachments/assets/0036db59-54f6-4009-93cc-2bc27710cf85)
+
+
+**Landing page**
+   ![2025-05-13 19_56_33-Window](https://github.com/user-attachments/assets/f1a10490-12b6-4fe1-a78c-bb0880b8f43a)
+
+
+**Shopping page**
+
+![2025-05-13 19_56_50-Window](https://github.com/user-attachments/assets/35bf7c3b-5d08-4986-a59d-a9c7eac43d4d)
+
+
+**Cart page**
+![2025-05-13 19_57_24-Window](https://github.com/user-attachments/assets/8b82fd8c-b984-44f8-ba20-f80899beca11)
+
+
+
 # 🎨Color Palette
 <pre>:root {
     --color-bg: #31363F;           /* Main background */

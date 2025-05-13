@@ -1,31 +1,36 @@
 <div class="topbar">
-    <button
-            class="topbar_button {% if app.request.get('_route') == 'home' or
-                app.request.get('_route') == '' %} active{% endif %}"
-            onclick="window.location.href='{{ path('home') }}'"
-            role="button">
-        <b class="fas fa-home"> Home</b>
-    </button>
-    <button
-            class="topbar_button {% if app.request.get('_route') == 'shop' %} active{% endif %}"
-            onclick="window.location.href='{{ path('shop') }}'"
-            role="button"
-    >
-        <b class="fas fa-search"> Shop</b>
-    </button>
-    <button
-            class="topbar_button {% if app.request.get('_route') == 'cart' %} active{% endif %}"
-            onclick="window.location.href='{{ path('cart') }}'"
-            role="button"
-    >
-        <b class="fas fa-shopping-cart"> Cart</b>
-    </button>
-    <button
-            onclick="window.location.href='{{ path('logout') }}'"
-            role="button"
-    >
-        <b class="fas fa-sign-out"> Logout</b>
-    </button>
+    <div class="left">
+        <i class="accent-text logo">ShopMe</i>
+    </div>
+    <div class="right">
+        <button
+                class="topbar_button {% if app.request.get('_route') == 'home' or
+                    app.request.get('_route') == '' %} active{% endif %}"
+                onclick="window.location.href='{{ path('home') }}'"
+                role="button">
+            <b class="fas fa-home"> Home</b>
+        </button>
+        <button
+                class="topbar_button {% if app.request.get('_route') == 'shop' %} active{% endif %}"
+                onclick="window.location.href='{{ path('shop') }}'"
+                role="button"
+        >
+            <b class="fas fa-search"> Shop</b>
+        </button>
+        <button
+                class="topbar_button {% if app.request.get('_route') == 'cart' %} active{% endif %}"
+                onclick="window.location.href='{{ path('cart') }}'"
+                role="button"
+        >
+            <b class="fas fa-shopping-cart"> Cart</b>
+        </button>
+        <button
+                onclick="window.location.href='{{ path('logout') }}'"
+                role="button"
+        >
+            <b class="fas fa-sign-out"> Logout</b>
+        </button>
+    </div>
 </div>
 
 
@@ -40,6 +45,26 @@
         align-items: center;
         justify-content: end;
         border-radius: 10px;
+    }
+
+    .left {
+        display: flex;
+        width: 99%;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+    }
+
+    .right {
+        display: flex;
+        width: 99%;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        justify-content: end;
+        border-radius: 10px;
+    }
+
+    .logo{
+        font-size: 50px;
     }
 
     .topbar_button {

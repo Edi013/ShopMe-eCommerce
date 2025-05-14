@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
+use App\Entity\Enums\Constants;
 use App\UseCases\Interfaces\Services\ICartService;
 use App\UseCases\Interfaces\Services\IProductService;
 use App\UseCases\Interfaces\Services\ISaleService;
@@ -92,15 +93,22 @@ class CartController extends AbstractController
         $cartProducts = $this->cartService->getCartProductsByUser($user);
 
         try{
-            $this->saleService->placeOrder($user, $cartProducts);
-            $this->cartService->removeAllProductsFromCart();
+            $result = $this->saleService->placeOrder($user, $cartProducts);
+            if($result == Constants::SUCCESS){
+                $this->cartService->removeAllProductsFromCart();
+                $this->addFlash('success', 'Ordered placed!');
+                return $this->redirectToRoute('home');            }
+            if($result == Constants::NOT_ENOUGH_STOCK){
+                $this->addFlash('error', 'Not enough stock!');
+                return $this->redirectToRoute('cart');
+            }
+
+            $this->addFlash('error', 'Order was not placed!');
+            return $this->redirectToRoute('cart');
         }
         catch (\Exception $e){
             $this->addFlash('error', 'Error placing order. Try later.');
             return $this->redirectToRoute('cart');
         }
-
-        $this->addFlash('success', 'Ordered placed!');
-        return $this->redirectToRoute('home');
     }
 }

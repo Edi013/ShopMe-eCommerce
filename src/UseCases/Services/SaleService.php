@@ -3,6 +3,7 @@
 namespace App\UseCases\Services;
 
 use App\Entity\CartProduct;
+use App\Entity\Enums\Constants;
 use App\Entity\Sale;
 use App\Entity\SaleProduct;
 use App\Entity\User;
@@ -47,39 +48,32 @@ class SaleService implements  ISaleService
     /**
      * @param CartProduct[] $products
      */
-    public function assignProductsOnSale($sale, $products): void
+    public function assignProductsOnSale($sale, $products): Constants
     {
         $this->entityManager->beginTransaction();
         try{
             foreach ($products as $cartProduct) {
                 $product = $cartProduct->getProduct();
-                $quantity = $cartProduct->getQuantity();
-                if ($product->getStock() < $quantity) {
-                    $this->requestStack->getSession()->getFlashBag()->add(
-                        'error',
-                        sprintf('Not enough stock for "%s". Ordered: %d, Available: %d',
-                            $product->getTitle(),
-                            $quantity,
-                            $product->getStock()
-                        )
-                    );
+                $newQuantity = $product->getStock() - $cartProduct->getQuantity();
+                if($newQuantity < 0){
                     $this->entityManager->rollback();
-                    return;
+                    return Constants::NOT_ENOUGH_STOCK;
                 }
+                $product->setStock($newQuantity);
 
                 $saleProduct = new SaleProduct();
                 $saleProduct->setSale($sale);
                 $saleProduct->setProduct($product);
                 $saleProduct->setQuantity($cartProduct->getQuantity());
+
+                $this->entityManager->persist($product);
                 $this->entityManager->persist($saleProduct);
             }
             $this->entityManager->commit();
-        }catch (\Throwable $e) {
-            $this->requestStack->getSession()->getFlashBag()->add(
-                'error',
-                'Cannnot assign products to sale. Try later.'
-            );
+            return Constants::SUCCESS;
+        }catch (\Exception $e) {
             $this->entityManager->rollback();
+            return Constants::FAILED;
         }
     }
 
@@ -120,7 +114,7 @@ class SaleService implements  ISaleService
     /**
      * @param CartProduct[] $products
      */
-    public function placeOrder($user, array $products): void
+    public function placeOrder($user, array $products): string
     {
         $this->entityManager->beginTransaction();
         try {
@@ -131,7 +125,8 @@ class SaleService implements  ISaleService
             $this->entityManager->commit();
         } catch ( Exception $e) {
             $this->entityManager->rollback();
-            throw $e;
+            return 'not-enough-stock';
         }
+        return 'success';
     }
 }

@@ -3,6 +3,7 @@
 namespace App\UseCases\Interfaces\Services;
 
 use App\Entity\CartProduct;
+use App\Entity\Enums\Constants;
 use App\Entity\Sale;
 use App\Entity\User;
 
@@ -14,7 +15,7 @@ interface ISaleService
      * @param Sale $sale
      * @param CartProduct[] $products
      */
-    public function assignProductsOnSale(Sale $sale, array $products): void;
+    public function assignProductsOnSale(Sale $sale, array $products): Constants;
 
     public function getSaleProducts(User $user, string $saleId): array;
 
@@ -23,5 +24,5 @@ interface ISaleService
     /**
      * @param CartProduct[] $products
      */
-    public function placeOrder(User $user, array $products): void;
+    public function placeOrder(User $user, array $products): string;
 }

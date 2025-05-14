@@ -1,12 +1,16 @@
-// Users table
+Table roles {
+  id int [primary key]
+  name text
+}
+
 Table users {
   id UUID [primary key, default: `gen_random_uuid()`]
   user_name text [unique, not null, note: 'Unique username']
   password text [not null, note: 'Hashed password using pgcrypto']
   created_at timestamp [default: `CURRENT_TIMESTAMP`]
+  role_id FK [not null, ref: > roles.id]
 }
 
-// Products table
 Table products {
   id UUID [primary key, default: `gen_random_uuid()`]
   title text [not null]
@@ -16,21 +20,18 @@ Table products {
   active boolean [not null, default: `true`]
 }
 
-// Sales table
 Table sales {
   id UUID [primary key, default: `gen_random_uuid()`]
   user_id UUID [not null, ref: > users.id]
   created_at timestamp [default: `CURRENT_TIMESTAMP`]
 }
 
-// Sale-Products join table
 Table sale_products {
   sale_id UUID [primary key, not null, ref: > sales.id]
   product_id UUID [primary key, not null, ref: > products.id]
   quantity integer [not null, note: 'Quantity >= 0']
  }
 
-// Cart-Products join table
 Table cart_products {
   user_id UUID [primary key, not null, ref: > users.id]
   product_id UUID [primary key, not null, ref: > products.id] 

@@ -92,5 +92,19 @@ SELECT * FROM cart_products;
 -- Cart section END -------------------------------
 ---------------------------------------------------
 
+-- Roles table ----
+ALTER TABLE users ADD COLUMN role_id INTEGER REFERENCES roles(id) DEFAULT 1;
 
 
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+INSERT INTO roles (name) VALUES
+('user'),
+('admin');
+
+SELECT * FROM roles;
+-- Roles section END -------------------------------
+---------------------------------------------------

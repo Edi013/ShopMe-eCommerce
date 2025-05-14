@@ -3,6 +3,16 @@
         <i class="accent-text logo">ShopMe</i>
     </div>
     <div class="right">
+        {% if is_admin() %}
+        <button
+                class="topbar_button {% if app.request.get('_route') == 'products' or
+                    app.request.get('_route') == '' %} active{% endif %}"
+                onclick="window.location.href='{{ path('products') }}'"
+                role="button">
+            <b class="fas fa-cubes"> Products</b>
+        {% endif %}
+
+        </button>
         <button
                 class="topbar_button {% if app.request.get('_route') == 'home' or
                     app.request.get('_route') == '' %} active{% endif %}"

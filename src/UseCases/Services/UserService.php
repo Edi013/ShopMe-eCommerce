@@ -23,6 +23,11 @@ class UserService implements IUserService
         return $this->userRepository->findByUserName($username);
     }
 
+    public function isUserAdmin(string $username): bool
+    {
+        return $this->userRepository->isUserAdmin($username);
+    }
+
     public function createUser(string $username, string $plainPassword): User
     {
         $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);

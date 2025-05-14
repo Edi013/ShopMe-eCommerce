@@ -25,3 +25,6 @@ register_form:
 logout_form:
     path: [/logout]
     controller: App\Controller\LoginController::logout
+add-products:
+    path: [/products]
+    controller: App\Controller\Products::index

@@ -26,4 +26,14 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function isUserAdmin(string $username): bool
+    {
+        $user = $this->findByUserName($username);
+        if(!$user) {
+            return false;
+        }
+
+        return $user->getRoleId() === 2;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,6 +32,9 @@ class User
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    private int $role_id;
 
     #[ORM\OneToMany(targetEntity: Sale::class, mappedBy: 'user',  cascade: ['persist', 'remove'])]
     private Collection $sales;
@@ -120,30 +124,8 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection|Sale[]
-     */
-    public function getSales(): Collection
+    public function getRoleId(): int
     {
-        return $this->sales;
-    }
-
-    public function addSale(Sale $sale): self
-    {
-        if (!$this->sales->contains($sale)) {
-            $this->sales[] = $sale;
-            $sale->setUser($this);
-        }
-        return $this;
-    }
-
-    public function removeSale(Sale $sale): self
-    {
-        if ($this->sales->removeElement($sale)) {
-            if ($sale->getUser() === $this) {
-                $sale->setUser(null);
-            }
-        }
-        return $this;
+        return $this->role_id;
     }
 }

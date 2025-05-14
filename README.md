@@ -24,6 +24,12 @@
    - Run `symfony serve`
 
 
+# Database Diagram 
+
+![db_diagram](https://github.com/user-attachments/assets/198b729f-b096-43ce-b15a-4d0d1dc0ef2c)
+
+
+
 # Demo
 
 
@@ -43,7 +49,14 @@
 
 
 **Cart page**
+
+
 ![2025-05-13 19_57_24-Window](https://github.com/user-attachments/assets/8b82fd8c-b984-44f8-ba20-f80899beca11)
+
+**Admin dashboard**
+
+
+![2025-05-14 17_06_22-](https://github.com/user-attachments/assets/5a2ffe7e-ea54-4e81-a02e-716661a48edd)
 
 
 

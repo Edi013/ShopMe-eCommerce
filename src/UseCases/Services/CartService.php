@@ -49,7 +49,7 @@ class CartService implements ICartService
             $cartProduct = new CartProduct();
             $cartProduct->setUser($user);
             $cartProduct->setProduct($product);
-            $cartProduct->setQuantity(1);
+            $cartProduct->setQuantity($quantity);
             $cartProduct->setCreatedAt(new \DateTimeImmutable());
             $this->entityManager->persist($cartProduct);
         }

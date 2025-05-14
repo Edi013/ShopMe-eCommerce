@@ -37,4 +37,8 @@ class ProductService implements IProductService
     {
         return $this->productRepository->find(Uuid::fromString($productId));
     }
+
+    public function getAll(){
+        return $this->productRepository->findAll();
+    }
 }

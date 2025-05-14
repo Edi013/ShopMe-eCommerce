@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Common\UserSession;
-use App\Controller\Types\LoginFormType;
+use App\Controller\FormTypes\LoginFormType;
 use App\UseCases\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -33,7 +33,7 @@ class UserSession
     public static function setLastLoginDate(SessionInterface $session): void
     {
         $dateTime = new \DateTime();
-        $session->set(self::KEY_LAST_LOGIN, $dateTime->format(\DateTime::ATOM)); // ISO 8601
+        $session->set(self::KEY_LAST_LOGIN, $dateTime->format(\DateTime::ATOM));
     }
 
     public static function getLastLoginDate(SessionInterface $session): ?\DateTimeImmutable
@@ -61,16 +61,4 @@ class UserSession
         $session->getFlashBag()->clear();
         $session->invalidate();
     }
-
-//    public static function seedIdAndUsernameDevelopmentOnly(
-//        SessionInterface $session
-//    ): void {
-//        if (!$session->has(self::KEY_USER_ID)) {
-//            self::setUserId($session, '9ba0086b-4f61-4faf-a81d-233b34f9429b');
-//        }
-//
-//        if (!$session->has(self::KEY_USERNAME)) {
-//            self::setUsername($session, 'admin');
-//        }
-//    }
 }

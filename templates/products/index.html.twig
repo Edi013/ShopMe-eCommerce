@@ -19,7 +19,7 @@
     </div>
 
     <div>
-    <h1>Product List</h1>
+    <h1>All products</h1>
 
     {% if products is not empty %}
         <div class="center-div m-2">
@@ -69,22 +69,22 @@
                                     </button>
                                 </form>
                             </div>
-                                <!-- Update Quantity Button -->
-                                <div class="center-div">
-                                    <form method="post" action="{{ path('product_update_quantity', { id: item.id }) }}" class="center-div">
-                                        <div class="select-quantity">
-                                            <label for="quantity_{{ item.id }}">Quantity:</label>
-                                            <select name="quantity" id="quantity_{{ item.id }}">
-                                                {% for i in 0..1000 %}
-                                                    <option value="{{ i }}" {% if i == item.stock %}selected{% endif %}>{{ i }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <button class="btn btn-outline-light">
-                                            <i class="fas fa-shopping-cart"></i> Update Quantity
-                                        </button>
-                                    </form>
-                                </div>
+                            <!-- Update Quantity Button -->
+                            <div class="center-div">
+                                <form method="post" action="{{ path('product_update_quantity', { id: item.id }) }}" class="center-div">
+                                    <div class="select-quantity">
+                                        <label for="quantity_{{ item.id }}">Quantity:</label>
+                                        <select name="quantity" id="quantity_{{ item.id }}">
+                                            {% for i in 0..1000 %}
+                                                <option value="{{ i }}" {% if i == item.stock %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-outline-light">
+                                        <i class="fas fa-shopping-cart"></i> Update Quantity
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
             height: 40%;
             width: 98%;
             border-radius: 10px;
-            margin: 5% 0.5%;
+            margin: 1% 0.5%;
             min-height: 500px;
             min-width: 850px;
             font-size: 25px;

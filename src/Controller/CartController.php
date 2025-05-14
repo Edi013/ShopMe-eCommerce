@@ -94,12 +94,12 @@ class CartController extends AbstractController
 
         try{
             $result = $this->saleService->placeOrder($user, $cartProducts);
-            if($result == Constants::SUCCESS){
+            if($result === Constants::SUCCESS){
                 $this->cartService->removeAllProductsFromCart();
                 $this->addFlash('success', 'Ordered placed!');
                 return $this->redirectToRoute('home');            }
-            if($result == Constants::NOT_ENOUGH_STOCK){
-                $this->addFlash('error', 'Not enough stock!');
+            if($result === Constants::NOT_ENOUGH_STOCK){
+                $this->addFlash('error', Constants::NOT_ENOUGH_STOCK->message());
                 return $this->redirectToRoute('cart');
             }
 

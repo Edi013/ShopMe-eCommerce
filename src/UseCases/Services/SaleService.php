@@ -114,7 +114,7 @@ class SaleService implements  ISaleService
     /**
      * @param CartProduct[] $products
      */
-    public function placeOrder($user, array $products): string
+    public function placeOrder($user, array $products): Constants
     {
         $this->entityManager->beginTransaction();
         try {
@@ -123,10 +123,10 @@ class SaleService implements  ISaleService
 
             $this->entityManager->flush();
             $this->entityManager->commit();
+            return Constants::SUCCESS;
         } catch ( Exception $e) {
             $this->entityManager->rollback();
-            return 'not-enough-stock';
+            return Constants::NOT_ENOUGH_STOCK;
         }
-        return 'success';
     }
 }

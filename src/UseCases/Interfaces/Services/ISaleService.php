@@ -24,5 +24,5 @@ interface ISaleService
     /**
      * @param CartProduct[] $products
      */
-    public function placeOrder(User $user, array $products): string;
+    public function placeOrder(User $user, array $products): Constants;
 }
